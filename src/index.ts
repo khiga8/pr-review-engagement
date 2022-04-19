@@ -17,25 +17,24 @@ function generatePullRequestReviewStats(nodes) {
 
     const data = await issueMetadataGraphQLQuery({owner: owner, repo: repo, issueNumber: issueNumber})
     // const data = await closedByPullRequestsGraphQLQuery({owner: owner, repo: repo, issueNumber: issueNumber})
+
     console.log(data)
+    const timelineItems = data.issue.timelineItems?.edges
+    const comments = data.issue.comments
 
-    // console.log(data)
-    // const timelineItems = data.issue.timelineItems?.edges
-    // const comments = data.issue.comments
+    const pullRequestNodes = []
+    const pullRequestIds = []
 
-    // const pullRequestNodes = []
-    // const pullRequestIds = []
+    if (!timelineItems && !comments) return
 
-    // if (!timelineItems && !comments) return
-
-    // for (const item of timelineItems) {
-    //   const node = item.node
-    //   const pullRequest = node.source?.title
-    //   if (pullRequest && !pullRequestIds.includes(node.source.id)) {
-    //     pullRequestNodes.push(node.source)
-    //     pullRequestIds.push(node.source.id)
-    //   }
-    // }
+    for (const item of timelineItems) {
+      const node = item.node
+      const pullRequest = node.source?.title
+      if (pullRequest && !pullRequestIds.includes(node.source.id)) {
+        pullRequestNodes.push(node.source)
+        pullRequestIds.push(node.source.id)
+      }
+    }
     // console.log(pullRequestNodes)
     // for (const comment of comments) {
     //   const node = comment
