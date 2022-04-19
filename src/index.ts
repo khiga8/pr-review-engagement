@@ -1,4 +1,4 @@
-import { issueMetadataGraphQLQuery, pullRequestMetadataGraphQLQuery } from "./queries"
+import { closedByPullRequestsGraphQLQuery, issueMetadataGraphQLQuery, pullRequestMetadataGraphQLQuery } from "./queries"
 import * as core from '@actions/core'
 
 function generatePullRequestReviewStats(nodes) {
@@ -11,29 +11,32 @@ function generatePullRequestReviewStats(nodes) {
     // const repo = core.getInput('repo', { required: true });
     // const issueNumber = core.getInput('issue', { required: true });
     
-    const owner = 'primer'
-    const repo = 'view_components'
-    const issueNumber = 1049
+    const owner = 'khiga8'
+    const repo = 'github-a11y'
+    const issueNumber = 27
 
     const data = await issueMetadataGraphQLQuery({owner: owner, repo: repo, issueNumber: issueNumber})
+    // const data = await closedByPullRequestsGraphQLQuery({owner: owner, repo: repo, issueNumber: issueNumber})
     console.log(data)
-    const timelineItems = data.issue.timelineItems?.edges
-    const comments = data.issue.comments
 
-    const pullRequestNodes = []
-    const pullRequestIds = []
+    // console.log(data)
+    // const timelineItems = data.issue.timelineItems?.edges
+    // const comments = data.issue.comments
 
-    if (!timelineItems && !comments) return
+    // const pullRequestNodes = []
+    // const pullRequestIds = []
 
-    for (const item of timelineItems) {
-      const node = item.node
-      const pullRequest = node.source?.title
-      if (pullRequest && !pullRequestIds.includes(node.source.id)) {
-        pullRequestNodes.push(node.source)
-        pullRequestIds.push(node.source.id)
-      }
-    }
-    console.log(pullRequestNodes)
+    // if (!timelineItems && !comments) return
+
+    // for (const item of timelineItems) {
+    //   const node = item.node
+    //   const pullRequest = node.source?.title
+    //   if (pullRequest && !pullRequestIds.includes(node.source.id)) {
+    //     pullRequestNodes.push(node.source)
+    //     pullRequestIds.push(node.source.id)
+    //   }
+    // }
+    // console.log(pullRequestNodes)
     // for (const comment of comments) {
     //   const node = comment
     //   // const owner = node.match()

@@ -118,3 +118,28 @@ export async function pullRequestMetadataGraphQLQuery({ owner, repo, pullRequest
   return data
 }
 
+// TODO: This might not work
+export async function closedByPullRequestsGraphQLQuery({owner, repo, issueNumber}) {
+  const { data } = await graphql(
+    `
+      query ($owner: String!, $repo: String!, $issueNumber: Int!) {
+        repository(owner: $owner, name: $repo) {
+          issue(number: $issueNumber) {
+            closedByPullRequestsReferences(first: 10) {
+              nodes {
+                title
+              }
+            }
+          }
+        }
+      }
+    `, {
+      owner,
+      repo, 
+      issueNumber,
+      headers: {
+        authorization: `token ${GH_TOKEN}`,
+      },
+    })
+    return data
+}
