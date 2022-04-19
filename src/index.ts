@@ -1,4 +1,4 @@
-import { pullRequestMetadataGraphQLQuery, issueMetadataGraphQLQuery } from "./queries"
+import { issueMetadataGraphQLQuery, pullRequestMetadataGraphQLQuery } from "./queries"
 import * as core from '@actions/core'
 
 function generatePullRequestReviewStats(nodes) {
@@ -13,9 +13,10 @@ function generatePullRequestReviewStats(nodes) {
     
     const owner = 'primer'
     const repo = 'view_components'
-    const issueNumber = 1048
+    const issueNumber = 1049
 
     const data = await issueMetadataGraphQLQuery({owner: owner, repo: repo, issueNumber: issueNumber})
+    console.log(data)
     const timelineItems = data.issue.timelineItems?.edges
     const comments = data.issue.comments
 
@@ -54,6 +55,7 @@ function generatePullRequestReviewStats(nodes) {
 
     // pass this data to next step?
   } catch (err) {
-      core.setFailed(err.message);
+      console.log(err)
+      core.setFailed(err.message)
   }
 })();
